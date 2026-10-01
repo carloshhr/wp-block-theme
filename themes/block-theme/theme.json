@@ -1,0 +1,16 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "settings": {
+    "appearanceTools": true,
+    "layout": { "contentSize": "720px", "wideSize": "1200px" },
+    "typography": { "fluid": true },
+    "color": {
+      "palette": [
+        { "slug": "background", "color": "#ffffff", "name": "Background" },
+        { "slug": "foreground", "color": "#202124", "name": "Foreground" },
+        { "slug": "accent", "color": "#2457a7", "name": "Accent" }
+      ]
+    }
+  }
+}

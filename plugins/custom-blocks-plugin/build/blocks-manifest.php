@@ -1,0 +1,26 @@
+<?php
+// This file is generated. Do not modify it manually.
+return array(
+	'custom-blocks' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'custom-blocks/custom-blocks',
+		'version' => '0.1.0',
+		'title' => 'Custom Blocks',
+		'category' => 'widgets',
+		'icon' => 'media-interactive',
+		'description' => 'An interactive block with the Interactivity API.',
+		'example' => array(
+			
+		),
+		'supports' => array(
+			'interactivity' => true
+		),
+		'textdomain' => 'custom-blocks-plugin',
+		'editorScript' => 'file:./index.js',
+		'editorStyle' => 'file:./index.css',
+		'style' => 'file:./style-index.css',
+		'render' => 'file:./render.php',
+		'viewScriptModule' => 'file:./view.js'
+	)
+);
