@@ -59,7 +59,7 @@ Open Appearance → Editor → Templates → Front Page. The hero, headings and 
 
 The Latest Posts section uses a **non-inherited** native Query Loop, initially showing the three newest posts by date. Adjust section width with the Group layout, count in Query settings, and one or two columns in Post Template layout independently. The no-results message is a core block. No post catalog, Markdown import, images, or external fonts are included. The All posts link points to `/blog/`. To activate that route, create separate published Home and Blog pages in Pages (do not repurpose existing pages). In Settings → Reading, select **A static page**, choose Home as the homepage and Blog as the posts page, then save. Confirm neither slug is already occupied before creating pages. Until those Reading settings are saved, `/blog/` may return 404. The posts index uses `templates/home.html` with an inherited Query Loop, so its page size follows Reading settings; pagination is provided by core blocks. Do not replace existing saved template customizations.
 
-Site Editor changes are stored in the database and may override template files. If a file edit does not appear, inspect saved customizations rather than deleting them. Editor save/reload persistence has not been browser-tested because these tests intentionally do not mutate saved templates. Restore the previous Reading choices manually if you need to roll back the route; do not delete pre-existing content.
+Site Editor changes are stored in the database and may override template files. If a file edit does not appear, inspect saved customizations rather than deleting them. Editor save/reload persistence is tested only in a separate database on port 8890; never run that test against the existing site on port 8888. Restore the previous Reading choices manually if you need to roll back the route; do not delete pre-existing content.
 
 ## Opt-in pagination test data (existing wp-env)
 
@@ -77,6 +77,20 @@ npx wp-env run cli wp post list --post_type=post --post_status=publish --fields=
 ```
 
 Each fixture item names the existing `admin` login in `dc:creator`, but contains no `wp:author` record. `--authors=skip` prevents author creation; when the importer cannot map that author, its `process_post` fallback uses `get_current_user_id()`. WP-CLI `--user=admin` supplies that current user, avoiding author ID 0. Verify the `admin` account exists before importing; omitting `--user=admin` can leave imported posts without a valid author. The mounted theme path above is accessible inside wp-env CLI. Confirm exactly ten new prefixed published slugs, record their assigned IDs in your local change log, and verify the original post ID 1 remains published before running browser tests. Do not repeat the import, automatically delete posts, or change existing pages, options, or saved templates to reset this fixture. Rollback requires separately authorized deletion of **only the recorded imported IDs** after checking their identity; leaving the seed posts in the local environment is the safe default.
+
+## Isolated editor persistence check
+
+The existing port 8888 site contains saved templates and user data. `.wp-env.persistence.json` gives the editor test its own wp-env containers and database on port 8890; it mounts the same theme and plugin source but does **not** copy the 8888 database. The disk Front Page template supplies six Tool Cards in the fresh environment. Run these commands from the repository root (do not reset, destroy, or clean up either environment):
+
+```bash
+npx wp-env start --config=.wp-env.persistence.json
+npx wp-env run cli wp theme activate block-theme --config=.wp-env.persistence.json
+npx wp-env run cli wp plugin activate custom-blocks-plugin --config=.wp-env.persistence.json
+WP_BASE_URL=http://localhost:8890 npm run test:e2e -- --grep 'editor persistence'
+npx wp-env stop --config=.wp-env.persistence.json
+```
+
+The test logs in at 8890, saves a unique first-card title/description through the block's actual inline Tool name and Description controls in the Site Editor, reloads the editor and checks the frontend while verifying the second card remains independent. It leaves the saved template override and database intact for inspection; reruns create a new value on that isolated site. Do not delete that test data without authorization. The guard rejects any non-8890 base URL; the default `npm run test:e2e` still targets 8888 and excludes the mutating editor test.
 
 ## Verify
 

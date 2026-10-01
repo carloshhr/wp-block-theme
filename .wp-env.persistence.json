@@ -1,0 +1,8 @@
+{
+  "core": null,
+  "port": 8890,
+  "testsEnvironment": false,
+  "themes": ["./themes/block-theme"],
+  "plugins": ["./plugins/custom-blocks-plugin"],
+  "config": { "WP_DEBUG": true, "SCRIPT_DEBUG": true }
+}
