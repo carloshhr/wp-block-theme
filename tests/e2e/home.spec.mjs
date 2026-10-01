@@ -28,6 +28,19 @@ test('tool cards toggle independently with mouse and keyboard', async ({ page })
   expect(errors).toEqual([]);
 });
 
+test('front-page link opens the native posts index', async ({ page }) => {
+  await page.goto('/');
+  const allPosts = page.getByRole('link', { name: 'All posts' });
+  await expect(allPosts).toHaveAttribute('href', '/blog/');
+  const navigation = page.waitForResponse((response) => response.url().endsWith('/blog/') && response.request().isNavigationRequest());
+  await allPosts.click();
+  const response = await navigation;
+  expect(response.status()).toBe(200);
+  await expect(page).toHaveURL(/\/blog\/$/);
+  await expect(page.getByRole('heading', { name: 'All posts' })).toBeVisible();
+  await expect(page.locator('.wp-block-query .wp-block-post-template')).toBeVisible();
+});
+
 test('tools adapt to narrow and wide viewports', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 800 });
   await page.goto('/');

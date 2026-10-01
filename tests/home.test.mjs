@@ -5,6 +5,16 @@ const source = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'u
 const block = () => JSON.parse(source('plugins/custom-blocks-plugin/src/tool-card/block.json'));
 
 describe('terminal home', () => {
+  it('provides a native inherited posts index with pagination and a front-page link', () => {
+    const index = source('themes/block-theme/templates/home.html');
+    const front = source('themes/block-theme/templates/front-page.html');
+    expect(index).toContain('"inherit":true');
+    expect(index).toContain('wp:post-template');
+    expect(index).toContain('wp:query-pagination-previous');
+    expect(index).toContain('wp:query-pagination-numbers');
+    expect(index).toContain('wp:query-pagination-next');
+    expect(front).toMatch(/<a href="\/blog\/">All posts<\/a>/);
+  });
   it('provides six independently editable tool cards and a non-inherited recent-post query', () => {
     const home = source('themes/block-theme/templates/front-page.html');
     expect(home.match(/<!-- wp:custom-blocks\/tool-card /g)).toHaveLength(6);

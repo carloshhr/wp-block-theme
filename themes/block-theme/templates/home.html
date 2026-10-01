@@ -1,0 +1,16 @@
+<!-- wp:template-part {"slug":"header","area":"header"} /-->
+<!-- wp:group {"tagName":"main","className":"terminal-section","layout":{"type":"constrained"}} -->
+<main class="wp-block-group terminal-section">
+<!-- wp:heading {"level":1} --><h1>All posts</h1><!-- /wp:heading -->
+<!-- wp:query {"query":{"inherit":true},"layout":{"type":"constrained"}} -->
+<div class="wp-block-query">
+<!-- wp:post-template -->
+<!-- wp:post-date /--><!-- wp:post-title {"isLink":true} /--><!-- wp:post-excerpt /-->
+<!-- /wp:post-template -->
+<!-- wp:query-no-results --><!-- wp:paragraph --><p>No posts yet.</p><!-- /wp:paragraph --><!-- /wp:query-no-results -->
+<!-- wp:query-pagination -->
+<!-- wp:query-pagination-previous /--><!-- wp:query-pagination-numbers /--><!-- wp:query-pagination-next /-->
+<!-- /wp:query-pagination -->
+</div><!-- /wp:query -->
+</main><!-- /wp:group -->
+<!-- wp:template-part {"slug":"footer","area":"footer"} /-->
