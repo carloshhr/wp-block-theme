@@ -1,0 +1,19 @@
+.terminal-tool-card {
+	border: 1px solid #365642;
+	background: #17251d;
+	padding: 1rem;
+}
+.terminal-tool-card button {
+	background: transparent;
+	border: 0;
+	color: #b2eea5;
+	font: inherit;
+	font-weight: 700;
+	text-align: left;
+	text-transform: uppercase;
+	width: 100%;
+	cursor: pointer;
+}
+.terminal-tool-card button::before { content: '> '; color: #e6c77f; }
+.terminal-tool-card button:hover { color: #dbffcb; }
+.terminal-tool-card p { margin: .75rem 0 0; color: #a5baa8; font-size: .85rem; }

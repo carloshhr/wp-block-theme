@@ -1,13 +1,36 @@
 <!-- wp:template-part {"slug":"header","area":"header"} /-->
-<!-- wp:group {"layout":{"type":"constrained"}} -->
-<div class="wp-block-group"><!-- wp:heading {"level":1} --><h1>Welcome</h1><!-- /wp:heading -->
-<!-- wp:heading --><h2>Tools</h2><!-- /wp:heading -->
-<!-- wp:group {"layout":{"type":"grid","columnCount":2}} -->
-<div class="wp-block-group"><!-- wp:group {"layout":{"type":"constrained"}} --><div class="wp-block-group"><!-- wp:heading {"level":3} --><h3>Your tool</h3><!-- /wp:heading --><!-- wp:paragraph --><p>Edit this card in the Site Editor.</p><!-- /wp:paragraph --></div><!-- /wp:group --></div>
-<!-- /wp:group -->
-<!-- wp:heading --><h2>Latest posts</h2><!-- /wp:heading -->
+<!-- wp:group {"tagName":"main","className":"terminal-home","layout":{"type":"constrained"}} -->
+<main class="wp-block-group terminal-home">
+<!-- wp:group {"className":"terminal-window","layout":{"type":"constrained"}} -->
+<div class="wp-block-group terminal-window">
+<!-- wp:paragraph {"className":"terminal-window-bar"} --><p class="terminal-window-bar">● ● ● &nbsp; fish · zsh — 80×24</p><!-- /wp:paragraph -->
+<!-- wp:paragraph --><p>Last login: from the jungle</p><!-- /wp:paragraph -->
+<!-- wp:paragraph --><p><strong>carlos@yautjacode</strong>:<em>~</em>$ whoami</p><!-- /wp:paragraph -->
+<!-- wp:heading {"level":1} --><h1>Developer. Bug hunter. Collector of plain-text tools.</h1><!-- /wp:heading -->
+<!-- wp:paragraph --><p><strong>carlos@yautjacode</strong>:<em>~</em>$ ./start-blog<span class="terminal-cursor">_</span></p><!-- /wp:paragraph -->
+</div><!-- /wp:group -->
+<!-- wp:group {"anchor":"tools","className":"terminal-section","layout":{"type":"constrained"}} -->
+<div id="tools" class="wp-block-group terminal-section">
+<!-- wp:heading --><h2>[01] DAILY_TOOLS</h2><!-- /wp:heading -->
+<!-- wp:paragraph --><p>&gt; ls /tools --sort=use</p><!-- /wp:paragraph -->
+<!-- wp:group {"className":"terminal-tools","layout":{"type":"grid","columnCount":2}} -->
+<div class="wp-block-group terminal-tools">
+<!-- wp:custom-blocks/tool-card {"title":"neovim","description":"My primary text editor."} /-->
+<!-- wp:custom-blocks/tool-card {"title":"tmux","description":"A terminal multiplexer for persistent sessions."} /-->
+<!-- wp:custom-blocks/tool-card {"title":"fish + starship","description":"My shell and command prompt."} /-->
+<!-- wp:custom-blocks/tool-card {"title":"firefox","description":"A browser with separate containers."} /-->
+<!-- wp:custom-blocks/tool-card {"title":"obsidian","description":"Notes written in Markdown."} /-->
+<!-- wp:custom-blocks/tool-card {"title":"git","description":"Version control for my projects."} /-->
+</div><!-- /wp:group --></div><!-- /wp:group -->
+<!-- wp:group {"anchor":"latest","className":"terminal-section","layout":{"type":"constrained"}} -->
+<div id="latest" class="wp-block-group terminal-section">
+<!-- wp:heading --><h2>[02] LATEST_POSTS</h2><!-- /wp:heading -->
+<!-- wp:paragraph --><p>&gt; tail -n 3 ~/posts/*</p><!-- /wp:paragraph -->
 <!-- wp:query {"query":{"perPage":3,"pages":0,"offset":0,"postType":"post","order":"desc","orderBy":"date","inherit":false},"layout":{"type":"constrained"}} -->
-<div class="wp-block-query"><!-- wp:post-template {"layout":{"type":"grid","columnCount":2}} --><!-- wp:post-title {"isLink":true} /--><!-- wp:post-excerpt /--><!-- /wp:post-template --><!-- wp:query-no-results --><!-- wp:paragraph --><p>No posts yet.</p><!-- /wp:paragraph --><!-- /wp:query-no-results --></div>
-<!-- /wp:query --></div>
-<!-- /wp:group -->
+<div class="wp-block-query"><!-- wp:post-template {"layout":{"type":"grid","columnCount":2}} -->
+<!-- wp:post-date /--><!-- wp:post-title {"isLink":true} /--><!-- wp:post-excerpt /-->
+<!-- /wp:post-template --><!-- wp:query-no-results --><!-- wp:paragraph --><p>No posts yet.</p><!-- /wp:paragraph --><!-- /wp:query-no-results --></div><!-- /wp:query -->
+<!-- wp:paragraph --><p><a href="#latest">Latest posts ↑</a></p><!-- /wp:paragraph -->
+</div><!-- /wp:group -->
+</main><!-- /wp:group -->
 <!-- wp:template-part {"slug":"footer","area":"footer"} /-->

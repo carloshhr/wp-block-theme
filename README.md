@@ -53,9 +53,17 @@ tests/scaffold.test.mjs
 
 The root `.wp-env.json` uses `core: null`, `port: 8888`, `themes: ["./themes/block-theme"]`, `plugins: ["./plugins/custom-blocks-plugin"]`, and enables `WP_DEBUG` and `SCRIPT_DEBUG`. `theme.json` uses version 3 (requires WordPress 6.6+), `appearanceTools`, content/wide widths, and fluid typography. The interactive demo block is `custom-blocks/custom-blocks` and its Interactivity API store is `custom-blocks`.
 
-The front page uses a **non-inherited** Query Loop with three recent posts and an initial two-column layout. Section width, post count, and columns are core block editor controls. The tools cards are editable example groups, not migrated content. The generated block is the official reactive demo, **not** a custom latest-posts or tools implementation. Future work must define those sections without presuming decisions from the original source.
+## Edit the terminal home
 
-Site Editor changes are stored in the database and may override the displayed template files. If a file edit does not appear, check for a saved customization.
+Open Appearance → Editor → Templates → Front Page. The hero, headings and footer use core blocks; edit their copy directly. The Tools core Group contains six `custom-blocks/tool-card` blocks. Select a card to edit its plain-text Tool name and Description fields; use the editor's standard block inserter, mover, and remove controls to add, reorder, or delete cards. Each card starts collapsed and expands independently on the frontend. The original `custom-blocks/custom-blocks` demo remains registered for existing content.
+
+The Latest Posts section uses a **non-inherited** native Query Loop, initially showing the three newest posts by date. Adjust section width with the Group layout, count in Query settings, and one or two columns in Post Template layout independently. The no-results message is a core block. No post catalog, Markdown import, images, or external fonts are included. The original blog's `/blog` route is not a WordPress route here; no all-posts destination is advertised until an archive route is configured.
+
+Site Editor changes are stored in the database and may override template files. If a file edit does not appear, inspect saved customizations rather than deleting them. Editor save/reload persistence has not been browser-tested because these tests intentionally do not mutate saved templates.
+
+## Verify
+
+Run `npm run test:unit`, `npm run plugin:build`, and `npm run test:e2e` against the running `wp-env` at localhost:8888. Install Chromium with `npx playwright install chromium` if needed. The browser checks real click/keyboard interaction, independence, responsive cards, and page errors without creating content. The official WordPress Playwright package recommends Node LTS; check runtime support when using a non-LTS Node release.
 
 ## Official references
 

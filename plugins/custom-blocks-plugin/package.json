@@ -15,6 +15,10 @@
 		"start": "wp-scripts start --experimental-modules --blocks-manifest"
 	},
 	"dependencies": {
+		"@wordpress/block-editor": "^18.0.0",
+		"@wordpress/blocks": "^16.1.0",
+		"@wordpress/components": "^41.0.0",
+		"@wordpress/i18n": "^6.29.0",
 		"@wordpress/interactivity": "latest"
 	},
 	"files": [

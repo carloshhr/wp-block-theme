@@ -1,0 +1,1 @@
+import{getContext as t,store as o}from"@wordpress/interactivity";o("custom-blocks/tool-card",{actions:{toggle(){const o=t();o.isOpen=!o.isOpen}}});

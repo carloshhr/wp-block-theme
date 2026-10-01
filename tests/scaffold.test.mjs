@@ -26,7 +26,7 @@ describe('WordPress workspace scaffold', () => {
     expect(theme.settings.typography.fluid).toBe(true);
     expect(theme.settings.color.palette.length).toBeGreaterThan(0);
     expect(text('themes/block-theme/style.css')).toContain('Text Domain: block-theme');
-    expect(text('themes/block-theme/parts/footer.html')).toContain('Block Theme');
+    expect(text('themes/block-theme/parts/footer.html')).toContain('debug it');
     for (const file of ['style.css', 'index.php', 'templates/index.html', 'templates/front-page.html', 'parts/header.html', 'parts/footer.html']) {
       expect(text(`themes/block-theme/${file}`)).toBeTruthy();
     }
