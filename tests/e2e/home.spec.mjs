@@ -41,6 +41,24 @@ test('front-page link opens the native posts index', async ({ page }) => {
   await expect(page.locator('.wp-block-query .wp-block-post-template')).toBeVisible();
 });
 
+test('posts index paginates without repeating titles', async ({ page }) => {
+  const titles = () => page.locator('.wp-block-query .wp-block-post-template .wp-block-post-title').allTextContents();
+  await page.goto('/blog/');
+  await expect(page.locator('.wp-block-query .wp-block-post-template > li')).toHaveCount(10);
+  const first = (await titles()).map((title) => title.trim());
+  expect(first).toHaveLength(10);
+  await page.locator('.wp-block-query-pagination-next').click();
+  await expect(page).toHaveURL(/\/blog\/page\/2\/$/);
+  await expect(page.locator('.wp-block-query .wp-block-post-template > li')).toHaveCount(1);
+  const second = (await titles()).map((title) => title.trim());
+  expect(second).toHaveLength(1);
+  expect(new Set([...first, ...second]).size).toBe(11);
+  await page.locator('.wp-block-query-pagination-previous').click();
+  await expect(page).toHaveURL(/\/blog\/$/);
+  await expect(page.locator('.wp-block-query .wp-block-post-template > li')).toHaveCount(10);
+  expect((await titles()).map((title) => title.trim())).toEqual(first);
+});
+
 test('tools adapt to narrow and wide viewports', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 800 });
   await page.goto('/');

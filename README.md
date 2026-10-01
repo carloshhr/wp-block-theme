@@ -61,9 +61,26 @@ The Latest Posts section uses a **non-inherited** native Query Loop, initially s
 
 Site Editor changes are stored in the database and may override template files. If a file edit does not appear, inspect saved customizations rather than deleting them. Editor save/reload persistence has not been browser-tested because these tests intentionally do not mutate saved templates. Restore the previous Reading choices manually if you need to roll back the route; do not delete pre-existing content.
 
+## Opt-in pagination test data (existing wp-env)
+
+The reusable WXR 1.2 fixture at `themes/block-theme/tests/fixtures/pagination.wordpress.xml` contains ten published posts dated January 2020. Together with the existing published `hello-world` post, it supplies 11 posts: ten on `/blog/` and one on `/blog/page/2/` when Settings → Reading has **Blog pages show at most** set to 10. Import only into the intended local wp-env on port 8888, never into production. The fixture contains no pages, categories, media, or author records. Import is **opt-in**, not part of the test runner.
+
+Before import, check that the site uses the expected theme, posts page and page size, and that none of the ten `pagination-seed-01` through `pagination-seed-10` slugs already exists. Stop if any slug exists: repeating import may create duplicates. The WordPress Importer plugin is required for `wp import`; install it in this local environment only if you authorize that plugin change. Run from the repository root after `npm run env:start`:
+
+```bash
+npx wp-env run cli wp option get posts_per_page
+npx wp-env run cli wp option get page_for_posts
+npx wp-env run cli wp post list --post_type=post --post_status=any --fields=ID,post_name,post_status
+npx wp-env run cli wp plugin install wordpress-importer --activate
+npx wp-env run cli wp import wp-content/themes/block-theme/tests/fixtures/pagination.wordpress.xml --authors=skip --user=admin
+npx wp-env run cli wp post list --post_type=post --post_status=publish --fields=ID,post_name,post_status
+```
+
+Each fixture item names the existing `admin` login in `dc:creator`, but contains no `wp:author` record. `--authors=skip` prevents author creation; when the importer cannot map that author, its `process_post` fallback uses `get_current_user_id()`. WP-CLI `--user=admin` supplies that current user, avoiding author ID 0. Verify the `admin` account exists before importing; omitting `--user=admin` can leave imported posts without a valid author. The mounted theme path above is accessible inside wp-env CLI. Confirm exactly ten new prefixed published slugs, record their assigned IDs in your local change log, and verify the original post ID 1 remains published before running browser tests. Do not repeat the import, automatically delete posts, or change existing pages, options, or saved templates to reset this fixture. Rollback requires separately authorized deletion of **only the recorded imported IDs** after checking their identity; leaving the seed posts in the local environment is the safe default.
+
 ## Verify
 
-Run `npm run test:unit`, `npm run plugin:build`, and `npm run test:e2e` against the running `wp-env` at localhost:8888. Install Chromium with `npx playwright install chromium` if needed. Before running browser tests, publish separate Home and Blog pages and set Settings → Reading to use Home as the static homepage and Blog as the posts page. Ensure the active Front Page template displays the All posts link; saved Site Editor overrides can hide file changes. The browser checks real click/keyboard interaction, independence, responsive cards, navigation to the posts index, and page errors without creating content. A missing `/blog/` route fails the test rather than being skipped. The official WordPress Playwright package recommends Node LTS; check runtime support when using a non-LTS Node release.
+Run `npm run test:unit`, `npm run plugin:build`, and `npm run test:e2e` against the running `wp-env` at localhost:8888. Install Chromium with `npx playwright install chromium` if needed. Before running browser tests, publish separate Home and Blog pages and set Settings → Reading to use Home as the static homepage and Blog as the posts page. Ensure the active Front Page template displays the All posts link; saved Site Editor overrides can hide file changes. The browser checks real click/keyboard interaction, independence, responsive cards, navigation and next/previous pagination with disjoint post titles. The pagination check requires the opt-in seed import above and the original published post ID 1; it never imports content automatically. A missing `/blog/` route fails the test rather than being skipped. The official WordPress Playwright package recommends Node LTS; check runtime support when using a non-LTS Node release.
 
 ## Official references
 
