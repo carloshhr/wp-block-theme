@@ -5,6 +5,17 @@ const source = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'u
 const block = () => JSON.parse(source('plugins/custom-blocks-plugin/src/tool-card/block.json'));
 
 describe('terminal home', () => {
+  it('provides a native individual post template with title, date and full content', () => {
+    const single = source('themes/block-theme/templates/single.html');
+    expect(single).toContain('"slug":"header"');
+    expect(single).toContain('"slug":"footer"');
+    expect(single).toContain('"tagName":"main"');
+    expect(single).toContain('wp:post-title');
+    expect(single).toContain('"level":1');
+    expect(single).toContain('wp:post-date');
+    expect(single).toContain('wp:post-content');
+    expect(single).not.toContain('wp:query');
+  });
   it('provides a native inherited posts index with pagination and a front-page link', () => {
     const index = source('themes/block-theme/templates/home.html');
     const front = source('themes/block-theme/templates/front-page.html');

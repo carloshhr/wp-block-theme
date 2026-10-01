@@ -41,6 +41,26 @@ test('front-page link opens the native posts index', async ({ page }) => {
   await expect(page.locator('.wp-block-query .wp-block-post-template')).toBeVisible();
 });
 
+test('a published blog post renders its own title and full body', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.getByRole('link', { name: 'All posts' })).toBeVisible();
+  await page.goto('/blog/');
+  await expect(page.getByRole('heading', { name: 'All posts' })).toBeVisible();
+  const post = page.locator('.wp-block-query .wp-block-post-template > li').first();
+  await expect(post).toBeVisible();
+  const link = post.locator('.wp-block-post-title a');
+  const title = (await link.innerText()).trim();
+  expect(title.length).toBeGreaterThan(0);
+  const href = await link.getAttribute('href');
+  expect(href).toBeTruthy();
+  await link.click();
+  await expect(page).toHaveURL(href);
+  await expect(page.locator('main h1.wp-block-post-title')).toHaveText(title);
+  const body = page.locator('main .wp-block-post-content');
+  await expect(body).toBeVisible();
+  expect((await body.innerText()).trim().length).toBeGreaterThan(0);
+});
+
 test('posts index paginates without repeating titles', async ({ page }) => {
   const titles = () => page.locator('.wp-block-query .wp-block-post-template .wp-block-post-title').allTextContents();
   await page.goto('/blog/');
